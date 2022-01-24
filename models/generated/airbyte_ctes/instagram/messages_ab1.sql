@@ -9,18 +9,19 @@
 -- depends_on: {{ source('instagram', '_airbyte_raw_messages') }}
 select
     {{ json_extract_scalar('_airbyte_data', ['_id'], ['_id']) }} as _id,
-    {{ json_extract_scalar('_airbyte_data', ['text'], ['text']) }} as text,
     {{ json_extract_scalar('_airbyte_data', ['type'], ['type']) }} as type,
+    null AS price,
     {{ json_extract_scalar('_airbyte_data', ['bot_id'], ['bot_id']) }} as bot_id,
     {{ json_extract_scalar('_airbyte_data', ['status'], ['status']) }} as status,
+    null AS is_paid,
     {{ json_extract_scalar('_airbyte_data', ['user_id'], ['user_id']) }} as user_id,
-    {{ json_extract_scalar('_airbyte_data', ['campaign'], ['campaign']) }} as campaign,
+    json_extract_scalar(_airbyte_data, "$['campaign']['id']")  as campaign_id,
+    null AS currency,
     {{ json_extract_scalar('_airbyte_data', ['direction'], ['direction']) }} as direction,
     {{ json_extract_scalar('_airbyte_data', ['contact_id'], ['contact_id']) }} as contact_id,
     {{ json_extract_scalar('_airbyte_data', ['created_at'], ['created_at']) }} as created_at,
     {{ json_extract_scalar('_airbyte_data', ['updated_at'], ['updated_at']) }} as updated_at,
-    {{ json_extract_scalar('_airbyte_data', ['channel_data'], ['channel_data']) }} as channel_data,
-    {{ json_extract_scalar('_airbyte_data', ['reject_reason'], ['reject_reason']) }} as reject_reason,
+    null AS price_country_code,
     _airbyte_ab_id,
     _airbyte_emitted_at,
     {{ current_timestamp() }} as _airbyte_normalized_at
